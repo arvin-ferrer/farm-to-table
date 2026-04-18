@@ -1,0 +1,31 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: farm-to-table-backend
+    ports:
+      - "4000:4000"
+    env_file:
+      - ./backend/.env
+    restart: unless-stopped
+    networks:
+      - farm-to-table-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: farm-to-table-frontend
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+    networks:
+      - farm-to-table-network
+
+networks:
+  farm-to-table-network:
+    driver: bridge
+
