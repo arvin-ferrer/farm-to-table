@@ -1,18 +1,13 @@
 # Farm-To-Table (CMSC100 Final Project)
 
-This repository contains the source code for the Farm-To-Table e-commerce platform, built using the MERN stack with TypeScript. 
-
-## Project Structure
-
-This is a monorepo containing both the frontend and backend:
-* `/frontend`: React application built with Vite and TypeScript.
-* `/backend`: Express API built with Node.js, Mongoose, and TypeScript.
+This repository contains the source code for the Farm-To-Table e-commerce platform, built using the MERN stack with TypeScript.
 
 ## Prerequisites
 
 Before starting, ensure you have the following installed on your machine:
-* Node.js (v18 or higher recommended)
-* Git
+
+- Node.js (v18 or higher recommended)
+- Git
 
 ## Local Development Setup
 
@@ -44,7 +39,9 @@ Navigate to the `backend` directory, copy the example file, and update it with t
 cd backend
 cp .env.example .env
 ```
+
 Ensure your `backend/.env` looks like this:
+
 ```env
 PORT=4000
 MONGODB_URI=<Replace with the provided Atlas connection string>
@@ -59,7 +56,9 @@ Navigate to the `frontend` directory and copy the example file:
 cd ../frontend
 cp .env.example .env
 ```
+
 Ensure your `frontend/.env` looks like this:
+
 ```env
 VITE_API_URL=http://localhost:4000/api
 ```
@@ -73,18 +72,18 @@ cd ..
 npm run dev
 ```
 
-* The frontend will be available at: http://localhost:5173
-* The backend API will be available at: http://localhost:4000
-* You can test the backend health route at: http://localhost:4000/api/health
+- The frontend will be available at: http://localhost:5173
+- The backend API will be available at: http://localhost:4000
+- You can test the backend health route at: http://localhost:4000/api/health
 
 ## Useful Scripts (Run from root)
 
-* `npm run dev`: Starts both frontend and backend in development mode with hot-reloading.
-* `npm run dev:frontend`: Starts only the frontend.
-* `npm run dev:backend`: Starts only the backend.
-* `npm run build`: Compiles TypeScript and builds both projects for production.
+- `npm run dev`: Starts both frontend and backend in development mode with hot-reloading.
+- `npm run dev:frontend`: Starts only the frontend.
+- `npm run dev:backend`: Starts only the backend.
+- `npm run build`: Compiles TypeScript and builds both projects for production.
 
 ## Deployment Notes
 
-* The project is configured with Docker for production deployment.
-* Code pushed to the `main` branch is automatically synced and deployed to Vercel (Frontend) and Render (Backend). Do not push directly to `main` unless you are releasing a feature.
+- The project is configured with Docker for production deployment.
+- Code pushed to the `main` branch is automatically synced and deployed to Vercel (Frontend) and Render (Backend). Do not push directly to `main` unless you are releasing a feature.
