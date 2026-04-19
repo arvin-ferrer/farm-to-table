@@ -1,0 +1,22 @@
+#!/bin/sh
+
+# Git passes 3 arguments to post-checkout:
+prev_head=$1
+new_head=$2
+is_branch_checkout=$3
+
+# Only run if we actually checked out a branch (not just a specific file)
+if [ "$is_branch_checkout" = "1" ]; then
+  
+  # Check if package.json is different between the two branches
+  changed_files="$(git diff --name-only $prev_head $new_head)"
+  
+  if echo "$changed_files" | grep -q "package.json"; then
+    echo "BRANCH ALERT: package.json is different on this branch! Automatically updating your node_modules..."
+    npm run install:all
+  else
+    # Get the current branch name to show a friendly alert
+    current_branch=$(git rev-parse --abbrev-ref HEAD)
+    echo "Successfully switched to branch: $current_branch"
+  fi
+fi
