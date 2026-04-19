@@ -7,7 +7,7 @@ on:
 
 jobs:
   sync:
-    if: github.repository == 'CMSC100-Laboratory/final-project-arvin-ferrer'
+    if: github.repository != 'arvin-ferrer/farm-to-table'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Source Code
