@@ -16,8 +16,8 @@ Follow these steps to get the project running on your local machine.
 ### 1. Clone the repository
 
 ```bash
-git clone git@github.com:CMSC100-Laboratory/final-project-arvin-ferrer.git
-cd final-project-arvin-ferrer
+git clone git@github.com:CMSC100-Laboratory/final-project-Nero.git
+cd final-project-Nero
 ```
 
 ### 2. Install dependencies
