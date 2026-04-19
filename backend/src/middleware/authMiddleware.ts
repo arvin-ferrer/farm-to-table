@@ -26,3 +26,13 @@ export const protect = async (req: Request, res: Response, next: NextFunction): 
     res.status(401).json({ message: "Not authorized, token failed" });
   }
 };
+
+// admin only
+export const adminOnly = (req: Request, res: Response, next: NextFunction): void => {
+  const user = (req as any).user;
+  if (user && user.userType === "admin") {
+    next();
+  } else {
+    res.status(403).json({ message: "Access denied, admin only" });
+  }
+};

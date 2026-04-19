@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 import authRoutes from "./routes/authRoutes";
+import adminDashboardRoutes from "./routes/adminDashboardRoutes";
 import { seedAdmin } from "./utils/seedAdmin";
 
 dotenv.config();
@@ -29,16 +30,16 @@ app.get("/api/health", (_req: Request, res: Response) => {
 
 // API Routes
 app.use("/api/auth", authRoutes);
+app.use("/api/admin", adminDashboardRoutes);
 
 // MongoDB Connection
-const MONGODB_URI =
-  process.env.MONGODB_URI || "mongodb://localhost:27018/farm-to-table";
+const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost:27018/farm-to-table";
 
 mongoose
   .connect(MONGODB_URI)
   .then(async () => {
     console.log("Connected to MongoDB");
-    
+
     // Automatically check and create admin user if missing
     await seedAdmin();
 
