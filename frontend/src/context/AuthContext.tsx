@@ -1,6 +1,5 @@
-import { createContext, useState, useEffect, useContext } from "react";
+import { createContext, useState, useEffect, useContext, useCallback } from "react";
 import type { ReactNode } from "react";
-
 interface User {
   id: string;
   firstname: string;
@@ -8,26 +7,22 @@ interface User {
   email: string;
   userType: string;
 }
-
 interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
   isLoading: boolean;
   checkAuth: () => Promise<void>;
 }
-
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
-
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-
   // function to ping the backend and check if the HttpOnly cookie is still valid
-  const checkAuth = async () => {
+  const checkAuth = useCallback(async () => {
     try {
       const response = await fetch("/api/auth/me");
       if (response.ok) {
-        const data = await response.json();
+        const data = (await response.json()) as { user: User };
         setUser(data.user);
       } else {
         setUser(null);
@@ -38,20 +33,18 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     } finally {
       setIsLoading(false);
     }
-  };
-
+  }, []);
   // run immediately when the app loads
   useEffect(() => {
-    checkAuth();
-  }, []);
-
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    void checkAuth();
+  }, [checkAuth]);
   return (
     <AuthContext.Provider value={{ user, isAuthenticated: !!user, isLoading, checkAuth }}>
       {children}
     </AuthContext.Provider>
   );
 };
-
 // eslint-disable-next-line react-refresh/only-export-components
 export const useAuth = () => {
   const context = useContext(AuthContext);
