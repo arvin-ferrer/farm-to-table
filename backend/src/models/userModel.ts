@@ -1,33 +1,30 @@
-import mongoose from "mongoose";
+import { Document, Schema, model, Types } from "mongoose";
 
-const userSchema = new mongoose.Schema({
-    firstname: {
-        type: String,
-        required: true,
-    },
-    middlename: {
-        type: String,
-    },
-    lastname: {
-        type: String,
-        required: true,
-    },
-    email: {
-        type: String,
-        required: true,
-        unique: true
-    },
-    password: {
-        type: String,
-        required: true
-    },
-    userType: {
-        type: String,
-        default: "user",
-        enum: ["admin","user"]
-    }
-});
+export interface IUserSafe extends Document {
+  _id: Types.ObjectId;
+  firstname: string;
+  middlename?: string;
+  lastname: string;
+  email: string;
+  userType: "admin" | "user";
+}
 
-const User = mongoose.model("User",userSchema);
+interface IUserFull extends IUserSafe {
+  password: string;
+}
+
+const userSchema = new Schema<IUserFull>(
+  {
+    firstname: { type: String, required: true },
+    middlename: { type: String },
+    lastname: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
+    userType: { type: String, enum: ["admin", "user"], default: "user" },
+  },
+  { timestamps: true }
+);
+
+const User = model<IUserFull>("User", userSchema);
 
 export default User;
