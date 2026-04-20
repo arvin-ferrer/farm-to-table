@@ -1,17 +1,26 @@
+// authMiddleware.ts
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import User from "../models/userModel";
 
+interface JwtPayload {
+  id: string;
+}
+
 export const protect = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
-    const token = req.cookies.token;
+    const token = req.cookies.token as string | undefined;
 
     if (!token) {
       res.status(401).json({ message: "Not authorized, no token" });
       return;
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || "fallback_secret_key") as any;
+    const decoded = jwt.verify(
+      token,
+      process.env.JWT_SECRET || "fallback_secret_key"
+    ) as JwtPayload;
+
     const user = await User.findById(decoded.id).select("-password");
 
     if (!user) {
@@ -19,17 +28,16 @@ export const protect = async (req: Request, res: Response, next: NextFunction): 
       return;
     }
 
-    // attach user to the request object using type assertion for simplicity
-    (req as any).user = user;
+    req.user = user; //
     next();
-  } catch (error) {
+  } catch (_error) {
     res.status(401).json({ message: "Not authorized, token failed" });
   }
 };
 
-// admin only
 export const adminOnly = (req: Request, res: Response, next: NextFunction): void => {
-  const user = (req as any).user;
+  const user = req.user;
+
   if (user && user.userType === "admin") {
     next();
   } else {
