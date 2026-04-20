@@ -24,27 +24,38 @@ export const orders = async (req: Request, res: Response) => {
 };
 
 // Confirm an order and decrease the product inventory quantity.
-export const confirm = async (req: Request, res: Response) => {
+export const confirm = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
+
     const order = await Order.findById(id);
     if (!order) {
-      return res.status(404).json({ message: "Order not found" });
+      res.status(404).json({ message: "Order not found" });
+      return;
     }
+
     if (order.orderStatus !== 0) {
-      return res.status(400).json({ message: "Order already processed" });
+      res.status(400).json({ message: "Order already processed" });
+      return;
     }
+
     const product = await Product.findById(order.productId);
     if (!product) {
-      return res.status(404).json({ message: "Product not found" });
+      res.status(404).json({ message: "Product not found" });
+      return;
     }
+
     if (product.quantity < order.orderQuantity) {
-      return res.status(400).json({ message: "Insufficient stock" });
+      res.status(400).json({ message: "Insufficient stock" });
+      return;
     }
+
     product.quantity -= order.orderQuantity;
     await product.save();
+
     order.orderStatus = 1;
     await order.save();
+
     res.status(200).json({ message: "Order confirmed" });
   } catch (_error) {
     res.status(500).json({ message: "Error confirming order" });
