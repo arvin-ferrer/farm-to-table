@@ -8,7 +8,7 @@ export const users = async (req: Request, res: Response) => {
   try {
     const users = await User.find();
     res.status(200).json(users);
-  } catch (error) {
+  } catch (_error) {
     res.status(500).json({ message: "Error fetching users" });
   }
 };
@@ -18,7 +18,7 @@ export const orders = async (req: Request, res: Response) => {
   try {
     const orders = await Order.find();
     res.status(200).json(orders);
-  } catch (error) {
+  } catch (_error) {
     res.status(500).json({ message: "Error fetching orders" });
   }
 };
@@ -46,7 +46,7 @@ export const confirm = async (req: Request, res: Response) => {
     order.orderStatus = 1;
     await order.save();
     res.status(200).json({ message: "Order confirmed" });
-  } catch (error) {
+  } catch (_error) {
     res.status(500).json({ message: "Error confirming order" });
   }
 };
@@ -56,7 +56,7 @@ export const sales = async (req: Request, res: Response) => {
   try {
     const sales = await Order.find();
     res.status(200).json(sales);
-  } catch (error) {
+  } catch (_error) {
     res.status(500).json({ message: "Error fetching sales" });
   }
 };
