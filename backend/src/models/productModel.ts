@@ -2,8 +2,7 @@ import mongoose from "mongoose";
 
 const productSchema = new mongoose.Schema({
   productName: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Product",
+    type: String,
     required: true,
   },
   description: {

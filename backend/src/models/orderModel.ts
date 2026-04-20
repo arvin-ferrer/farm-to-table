@@ -6,7 +6,8 @@ const orderSchema = new mongoose.Schema({
     required: true,
   },
   productId: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Product",
     required: true,
   },
   orderQuantity: {
@@ -24,10 +25,6 @@ const orderSchema = new mongoose.Schema({
   },
   dateOrdered: {
     type: Date,
-    required: true,
-  },
-  time: {
-    type: String,
     required: true,
   },
 });
