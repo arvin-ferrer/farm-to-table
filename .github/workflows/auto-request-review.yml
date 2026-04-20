@@ -11,7 +11,7 @@ jobs:
       pull-requests: write
     steps:
       - name: Request teammates as reviewers
-        uses: actions/github-script@v7
+        uses: actions/github-script@v6
         with:
           script: |
             // List of all your team members' GitHub usernames
