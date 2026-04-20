@@ -1,29 +1,25 @@
-import mongoose from "mongoose";
+import { Document, Schema, model, Types } from "mongoose";
 
-const productSchema = new mongoose.Schema({
-  productName: {
-    type: String,
-    required: true,
-  },
-  description: {
-    type: String,
-    required: true,
-  },
-  productType: {
-    type: Number,
-    required: true,
-    enum: [1, 2],
-  },
-  quantity: {
-    type: Number,
-    required: true,
-  },
-  price: {
-    type: Number,
-    required: true,
-  },
-});
+export interface IProduct extends Document {
+  _id: Types.ObjectId;
+  productName: string;
+  description: string;
+  productType: 1 | 2;
+  quantity: number;
+  price: number;
+}
 
-const Product = mongoose.model("Product", productSchema);
+const productSchema = new Schema<IProduct>(
+  {
+    productName: { type: String, required: true },
+    description: { type: String, required: true },
+    productType: { type: Number, required: true, enum: [1, 2] },
+    quantity: { type: Number, required: true },
+    price: { type: Number, required: true },
+  },
+  { timestamps: true }
+);
+
+const Product = model<IProduct>("Product", productSchema);
 
 export default Product;
