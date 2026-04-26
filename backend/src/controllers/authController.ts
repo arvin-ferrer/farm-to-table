@@ -28,6 +28,7 @@ const generateTokenAndSetCookie = (res: Response, userId: unknown, userType: str
     secure: process.env.NODE_ENV === "production",
     sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
     maxAge: 24 * 60 * 60 * 1000,
+    partitioned: process.env.NODE_ENV === "production",
   });
 };
 
@@ -108,6 +109,7 @@ export const logout = (req: Request, res: Response) => {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
+    partitioned: process.env.NODE_ENV === "production",
   });
 
   res.status(200).json({ message: "Logged out successfully" });
