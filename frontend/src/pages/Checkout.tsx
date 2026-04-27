@@ -135,11 +135,10 @@ export default function Checkout() {
                     }}
                     placeholder="Enter your full delivery address…"
                     rows={3}
-                    className={`w-full rounded-xl border px-4 py-3 text-sm bg-black/[0.03] resize-none focus:outline-none focus:ring-2 transition-all placeholder:text-muted-foreground/60 ${
-                      addressError
+                    className={`w-full rounded-xl border px-4 py-3 text-sm bg-black/[0.03] resize-none focus:outline-none focus:ring-2 transition-all placeholder:text-muted-foreground/60 ${addressError
                         ? "border-destructive focus:ring-destructive/30"
                         : "border-transparent focus:ring-primary/30 focus:border-primary/30"
-                    }`}
+                      }`}
                   />
                   {addressError && (
                     <p className="text-xs text-destructive mt-1.5 font-medium">{addressError}</p>

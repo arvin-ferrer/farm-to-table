@@ -23,12 +23,7 @@ function App() {
           <Route path="/cart" element={<Cart />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/orders" element={<Orders />} />
-          <Route
-            path="/cart"
-            element={
-              <div className="p-8 text-center text-xl font-bold">Cart Page (Coming Soon)</div>
-            }
-          />
+          <Route path="/cart" element={<Cart />} />
         </Route>
 
         <Route element={<PrivateRoute allowedRoles={["admin"]} />}>
@@ -41,6 +36,8 @@ function App() {
             }
           />
           <Route path="/inventory" element={<Inventory />} />
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/checkout" element={<Checkout />} />
         </Route>
 
         <Route path="/login" element={<Login />} />
