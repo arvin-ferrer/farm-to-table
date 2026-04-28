@@ -2,9 +2,10 @@ import { createContext, useContext, useReducer, useCallback } from "react";
 import type { ReactNode } from "react";
 
 export interface CartProduct {
-  id: number;
+  id: string;
   name: string;
   category: string;
+  description: string;
   price: number;
   image?: string;
 }
@@ -20,8 +21,8 @@ interface CartState {
 
 type CartAction =
   | { type: "ADD_ITEM"; product: CartProduct; quantity?: number }
-  | { type: "REMOVE_ITEM"; productId: number }
-  | { type: "UPDATE_QUANTITY"; productId: number; quantity: number }
+  | { type: "REMOVE_ITEM"; productId: string }
+  | { type: "UPDATE_QUANTITY"; productId: string; quantity: number }
   | { type: "CLEAR_CART" };
 
 function cartReducer(state: CartState, action: CartAction): CartState {
@@ -64,8 +65,8 @@ interface CartContextType {
   totalItems: number;
   totalPrice: number;
   addItem: (product: CartProduct, quantity?: number) => void;
-  removeItem: (productId: number) => void;
-  updateQuantity: (productId: number, quantity: number) => void;
+  removeItem: (productId: string) => void;
+  updateQuantity: (productId: string, quantity: number) => void;
   clearCart: () => void;
 }
 
@@ -81,11 +82,11 @@ export function CartProvider({ children }: { children: ReactNode }) {
     dispatch({ type: "ADD_ITEM", product, quantity });
   }, []);
 
-  const removeItem = useCallback((productId: number) => {
+  const removeItem = useCallback((productId: string) => {
     dispatch({ type: "REMOVE_ITEM", productId });
   }, []);
 
-  const updateQuantity = useCallback((productId: number, quantity: number) => {
+  const updateQuantity = useCallback((productId: string, quantity: number) => {
     dispatch({ type: "UPDATE_QUANTITY", productId, quantity });
   }, []);
 

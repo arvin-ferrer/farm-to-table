@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "@/context/CartContext";
+import { apiFetch } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
@@ -30,6 +31,7 @@ export default function Checkout() {
   const [successOpen, setSuccessOpen] = useState(false);
   const [address, setAddress] = useState("");
   const [addressError, setAddressError] = useState("");
+  const [orderError, setOrderError] = useState("");
 
   const handlePlaceOrder = async () => {
     if (!address.trim()) {
@@ -37,25 +39,41 @@ export default function Checkout() {
       return;
     }
     setAddressError("");
+    setOrderError("");
     setIsPlacing(true);
 
     try {
-      // TODO: Replace with actual API call
-      // await apiFetch("/api/orders", {
-      //   method: "POST",
-      //   body: JSON.stringify({
-      //     items: items.map((i) => ({ productId: i.product.id, quantity: i.quantity })),
-      //     paymentMethod: "cash_on_delivery",
-      //     deliveryAddress: address,
-      //     status: "pending",
-      //   }),
-      // });
+      // Generate a shared transactionId for all items in this checkout
+      const transactionId = crypto.randomUUID();
 
-      // Simulate network delay
-      await new Promise((r) => setTimeout(r, 1200));
+      // Create one order document per cart item (backend model: one doc per product)
+      const orderPromises = items.map((item) =>
+        apiFetch("/api/orders", {
+          method: "POST",
+          body: JSON.stringify({
+            transactionId,
+            productId: item.product.id,
+            orderQuantity: item.quantity,
+          }),
+        })
+      );
+
+      const results = await Promise.all(orderPromises);
+
+      // Check if any request failed
+      const failed = results.filter((r) => !r.ok);
+      if (failed.length > 0) {
+        const errorData = await failed[0].json().catch(() => ({ message: "Unknown error" }));
+        setOrderError(
+          (errorData as { message: string }).message || "Failed to place order. Please try again."
+        );
+        return;
+      }
 
       clearCart();
       setSuccessOpen(true);
+    } catch (_error) {
+      setOrderError(`${_error} Network error. Please check your connection and try again.`);
     } finally {
       setIsPlacing(false);
     }
@@ -269,6 +287,12 @@ export default function Checkout() {
                       </>
                     )}
                   </Button>
+
+                  {orderError && (
+                    <p className="text-xs text-destructive font-medium text-center animate-fade-in">
+                      {orderError}
+                    </p>
+                  )}
                 </CardContent>
               </Card>
             </div>
