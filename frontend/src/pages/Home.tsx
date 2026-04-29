@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Footer from "@/components/Footer";
 import {
   Select,
   SelectContent,
@@ -40,7 +41,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-[#ecedef] pb-16">
+    <div className="min-h-screen bg-[#ecedef] ">
       <main className="container pt-8 md:pt-14 px-4 max-w-[1200px] mx-auto animate-fade-in">
         {/* Header section */}
         <h1 className="font-display text-4xl md:text-5xl font-extrabold text-foreground mb-10 tracking-tight">
@@ -209,6 +210,9 @@ export default function Home() {
           )}
         </DialogContent>
       </Dialog>
+      <div className="mt-20">
+        <Footer />
+      </div>
     </div>
   );
 }

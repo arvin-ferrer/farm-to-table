@@ -396,7 +396,7 @@ export default function Inventory() {
                       {truncate(product.description, 30)}
                     </TableCell>
                     <TableCell>
-                      <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <div className="flex items-center gap-1 opacity-100 group-hover:opacity-100 transition-opacity">
                         <button
                           onClick={() => openEditModal(product)}
                           className="p-2 rounded-lg hover:bg-muted transition-colors text-muted-foreground hover:text-foreground"
@@ -421,9 +421,7 @@ export default function Inventory() {
         </div>
       </main>
 
-      {/* ============================================================= */}
       {/*  ADD / EDIT PRODUCT MODAL                                      */}
-      {/* ============================================================= */}
       <Dialog open={modalOpen} onOpenChange={(open) => !open && closeModal()}>
         <DialogContent className="sm:max-w-[540px] p-0 gap-0 rounded-2xl overflow-hidden">
           {/* Header bar */}
@@ -593,9 +591,7 @@ export default function Inventory() {
         </DialogContent>
       </Dialog>
 
-      {/* ============================================================= */}
       {/*  DELETE CONFIRMATION DIALOG                                    */}
-      {/* ============================================================= */}
       <Dialog open={!!deleteTarget} onOpenChange={(open) => !open && setDeleteTarget(null)}>
         <DialogContent className="sm:max-w-[400px] p-6 gap-5 rounded-2xl">
           <DialogHeader>
